@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
     "/**": [
       "node_modules/onnxruntime-node/package.json",
       "node_modules/onnxruntime-node/dist/**",
+      "node_modules/onnxruntime-common/**",
       "node_modules/onnxruntime-node/bin/napi-v*/linux/x64/{onnxruntime_binding.node,libonnxruntime.so.1,libonnxruntime_providers_shared.so}",
     ],
   },
