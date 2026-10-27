@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Still Here — Option 3 v2: Marigold at Night</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  :root {
+    --night: #1a1512;
+    --night-2: #241d18;
+    --line: #3a3029;
+    --text: #f0e7d8;
+    --soft: #ab9c88;
+    --marigold: #eaa33a;       /* the one accent; the tints below are the same hue */
+    --marigold-deep: #c47a1c;
+    --marigold-light: #f6c76e;
+    --paper: #eee3d1;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; }
+  html, body { overflow-x: clip; }
+  body { background: var(--night); color: var(--text); font: 16px/1.6 "Geist", sans-serif; }
+  .mono { font-family: "Geist Mono", monospace; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 2; }
+
+  /* Film grain so the dark never looks flat */
+  .grain { position: fixed; inset: -10%; z-index: 50; pointer-events: none; opacity: .07; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); animation: grain 1.2s steps(6) infinite; }
+  @keyframes grain { 0%{transform:translate(0,0)} 25%{transform:translate(-3%,2%)} 50%{transform:translate(2%,-3%)} 75%{transform:translate(-2%,-1%)} 100%{transform:translate(1%,3%)} }
+
+  #petals { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+
+  /* Papel picado: generated cut-paper flags on a string */
+  .picado { position: relative; z-index: 3; height: 118px; overflow: hidden; }
+  .picado svg { width: 100%; height: 100%; display: block; }
+  .flag { transform-origin: 50% 0; animation: sway 6s ease-in-out infinite; }
+  @keyframes sway { 0%,100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
+
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 0; font-size: 14px; color: var(--soft); }
+  nav .name { font-family: "Instrument Serif"; font-size: 26px; color: var(--text); display: flex; align-items: center; gap: 10px; }
+  nav a { color: var(--soft); text-decoration: none; margin-left: 24px; }
+  nav a:hover { color: var(--text); }
+
+  .hero { padding: 70px 0 40px; position: relative; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 340px; gap: 40px; align-items: center; }
+  .ask-line { font-family: "Instrument Serif"; font-weight: 400; font-size: clamp(64px, 11vw, 164px); line-height: .88; letter-spacing: -.025em; }
+  .ask-line .w { display: inline-block; opacity: 0; transform: translateY(24px); filter: blur(8px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+  .ask-line i { color: var(--marigold); }
+  @keyframes rise { to { opacity: 1; transform: none; filter: none; } }
+  .ask-line .still { animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards, beat 1.6s ease-out 1.8s infinite; display: inline-block; }
+  @keyframes beat { 0%,100% { text-shadow: 0 0 0 transparent; } 8% { text-shadow: 0 0 28px rgba(234,163,58,.55); } 20% { text-shadow: 0 0 6px rgba(234,163,58,.15); } 28% { text-shadow: 0 0 22px rgba(234,163,58,.45); } 50% { text-shadow: 0 0 0 transparent; } }
+
+  .bloom { width: 100%; max-width: 340px; aspect-ratio: 1; justify-self: end; }
+  .bloom svg { width: 100%; height: 100%; animation: turn 80s linear infinite; }
+  @keyframes turn { to { transform: rotate(360deg); } }
+
+  /* Heartbeat: the switch's pulse. Changes with the state. */
+  .pulse { margin-top: 34px; position: relative; height: 90px; }
+  .pulse svg { width: 100%; height: 100%; overflow: visible; }
+  .pulse .trace { fill: none; stroke: var(--marigold); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgba(234,163,58,.6)); }
+  .pulse .ghost { fill: none; stroke: var(--line); stroke-width: 1; }
+  .pulse-label { position: absolute; right: 0; top: -6px; font: 12px "Geist Mono"; color: var(--soft); display: flex; gap: 8px; align-items: center; }
+  .pulse-label .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--marigold); animation: blink 1.6s ease-out infinite; }
+  @keyframes blink { 0%,100% { opacity: .25 } 10% { opacity: 1 } 30% { opacity: .4 } 40% { opacity: 1 } }
+
+  .hero-row { display: grid; grid-template-columns: 1fr 360px; gap: 48px; margin-top: 28px; align-items: center; }
+  .hero-row p { color: var(--soft); font-size: 19px; max-width: 42ch; }
+  .hero-row p b { color: var(--text); font-weight: 500; }
+  .answer { border: 1px solid var(--line); background: rgba(36,29,24,.85); backdrop-filter: blur(2px); padding: 22px; position: relative; }
+  .answer small { color: var(--soft); font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .yes { margin-top: 16px; width: 100%; min-height: 56px; border: 0; background: var(--marigold); color: var(--night); font: 600 17px "Geist"; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: background .2s, transform .15s; }
+  .yes:hover { background: var(--marigold-light); }
+  .yes:active { transform: scale(.98); }
+  .line { margin-top: 10px; width: 100%; min-height: 46px; background: transparent; border: 1px solid var(--line); color: var(--text); padding: 0 14px; font: 15px "Geist"; }
+  .line::placeholder { color: var(--soft); }
+  .thanks { margin-top: 12px; font-size: 14px; color: var(--marigold-light); min-height: 22px; }
+
+  /* The path home: four states joined by a trail of marigold petals */
+  .path-wrap { margin-top: 90px; }
+  .path-head { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; flex-wrap: wrap; margin-bottom: 18px; }
+  .path-head h2 { font-family: "Instrument Serif"; font-weight: 400; font-size: 40px; }
+  .path-head p { color: var(--soft); font-size: 14px; max-width: 46ch; }
+  .trail { height: 60px; }
+  .trail svg { width: 100%; height: 100%; overflow: visible; }
+  .path { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .step { padding: 14px 24px 30px 0; cursor: pointer; background: none; border: 0; color: inherit; text-align: left; font: inherit; }
+  .step h3 { font-family: "Instrument Serif"; font-weight: 400; font-size: 32px; color: var(--soft); transition: color .4s; display: flex; gap: 10px; align-items: center; }
+  .step .num { font: 12px "Geist Mono"; color: var(--soft); }
+  .step p { color: var(--soft); font-size: 14px; max-width: 26ch; }
+  .step.lit h3 { color: var(--marigold); }
+  .step.past h3 { color: var(--text); }
+  .step:focus-visible { outline: 2px solid var(--marigold); outline-offset: 4px; }
+
+  /* Afterwards: the ofrenda. A candle, the letter, the questions. */
+  .after { display: grid; grid-template-columns: 150px 1fr 1fr; gap: 0; margin: 110px 0 90px; border: 1px solid var(--line); position: relative; }
+  .altar { border-right: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 24px 0 26px; gap: 16px; }
+  .altar svg { width: 92px; height: 200px; overflow: visible; }
+  .altar small { font: 11px "Geist Mono"; color: var(--soft); text-align: center; line-height: 1.4; }
+  .flame { transform-origin: 50% 100%; }
+  .letter { padding: 44px; background: var(--paper); color: var(--night); position: relative; overflow: hidden; }
+  .letter .to { font-size: 13px; color: #6e6152; margin-bottom: 18px; display: flex; gap: 8px; align-items: center; }
+  .letter p { font-family: "Instrument Serif"; font-size: 25px; line-height: 1.35; position: relative; }
+  .letter p + p { margin-top: 14px; }
+  .letter .pressed { position: absolute; right: -36px; bottom: -36px; width: 170px; opacity: .55; transform: rotate(-18deg); }
+  .letter.open .ink { animation: write 2.4s cubic-bezier(.3,.6,.2,1) both; }
+  .letter.open .ink + .ink { animation-delay: .6s; }
+  @keyframes write { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  .sealed { margin-top: 6px; }
+  .seal-lines { display: grid; gap: 16px; margin: 8px 0 28px; }
+  .seal-lines i { display: block; height: 12px; background: #dccfb9; border-radius: 2px; }
+  .seal-lines i:nth-child(2) { width: 86%; } .seal-lines i:nth-child(3) { width: 93%; } .seal-lines i:nth-child(4) { width: 70%; } .seal-lines i:nth-child(5) { width: 40%; }
+  .seal-text { font-family: "Geist" !important; font-size: 15px !important; color: #5e5246; display: flex; gap: 8px; align-items: flex-start; max-width: 34ch; }
+  .seal-text i { margin-top: 3px; }
+  .peek { margin-top: 18px; min-height: 44px; padding: 0 16px; border: 1px solid #b9a88f; background: transparent; color: var(--night); font: 500 14px "Geist"; display: inline-flex; gap: 8px; align-items: center; cursor: pointer; }
+  .peek:hover { background: #e4d6c0; }
+  .peek:focus-visible { outline: 2px solid var(--marigold-deep); outline-offset: 3px; }
+  .letter .ink { display: none; }
+  .letter.open .ink { display: block; }
+  .letter.open .sealed { display: none; }
+  .qa .dim { color: var(--soft); font-family: "Instrument Serif"; font-style: italic; font-size: 26px; }
+  .open-qa { display: none; }
+  .after.released .open-qa { display: block; }
+  .after.released .locked { display: none; }
+  .qa { padding: 44px; }
+  .qa .q { color: var(--soft); font-size: 14px; }
+  .qa .a { font-size: 21px; margin: 12px 0 18px; }
+  .src { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; color: var(--marigold); border-bottom: 1px solid currentColor; margin: 0 14px 6px 0; }
+  .qa .none { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); }
+  .qa .none .a { font-family: "Instrument Serif"; font-style: italic; font-size: 26px; color: var(--soft); }
+  .gate { margin-top: 14px; font-size: 13px; color: var(--soft); display: flex; gap: 8px; align-items: center; }
+  .typing::after { content: "▍"; color: var(--marigold); animation: caret 1s steps(2) infinite; margin-left: 2px; }
+  @keyframes caret { 50% { opacity: 0 } }
+
+  .numbers { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .numbers div { padding: 26px 24px 30px 0; }
+  .numbers div + div { padding-left: 24px; border-left: 1px solid var(--line); }
+  .numbers b { display: block; font-family: "Instrument Serif"; font-weight: 400; font-size: 54px; line-height: 1; color: var(--marigold-light); }
+  .numbers span { color: var(--soft); font-size: 14px; }
+
+  .cta { display: flex; gap: 14px; flex-wrap: wrap; padding: 70px 0; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 22px; text-decoration: none; font: 500 15px "Geist"; border: 1px solid var(--line); color: var(--text); transition: border-color .2s, color .2s; }
+  .btn:hover { border-color: var(--soft); }
+  .btn.primary { border-color: var(--marigold); color: var(--marigold); }
+  .btn.primary:hover { background: rgba(234,163,58,.08); }
+  footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--soft); font-size: 13px; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--marigold); outline-offset: 3px; }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease-out, transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    .picado { height: 78px; }
+    .hero { padding: 36px 0 20px; }
+    .hero-grid, .hero-row { grid-template-columns: 1fr; }
+    .bloom { position: absolute; right: -90px; top: -10px; width: 230px; opacity: .45; z-index: -1; }
+    .path { grid-template-columns: 1fr 1fr; row-gap: 4px; }
+    .after { grid-template-columns: 1fr; }
+    .altar { border-right: 0; border-bottom: 1px solid var(--line); flex-direction: row; justify-content: center; padding: 18px; }
+    .altar svg { width: 60px; height: 130px; }
+    .letter, .qa { padding: 28px; }
+    .numbers { grid-template-columns: 1fr; }
+    .numbers div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+    nav a:not(:last-child) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .ask-line .w, .reveal { opacity: 1; transform: none; filter: none; }
+    .letter .ink { clip-path: none; }
+    #petals { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<canvas id="petals" aria-hidden="true"></canvas>
+
+<div class="picado" aria-hidden="true"><svg id="picado" preserveAspectRatio="xMidYMin slice"></svg></div>
+
+<div class="wrap">
+  <nav>
+    <span class="name"><svg width="26" height="26" viewBox="-50 -50 100 100" id="logo"></svg>Still Here</span>
+    <span><a href="#how">How it decides</a><a href="#">Source</a></span>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-grid">
+      <h1 class="ask-line" aria-label="Are you still here?">
+        <span class="w" style="animation-delay:.1s">Are</span>
+        <span class="w" style="animation-delay:.25s">you</span>
+        <i class="w still" style="animation-delay:.45s">still</i><br>
+        <span class="w" style="animation-delay:.7s">here?</span>
+      </h1>
+      <div class="bloom" aria-hidden="true"><svg viewBox="-110 -110 220 220" id="bloom"></svg></div>
+    </div>
+
+    <div class="pulse" aria-hidden="true">
+      <span class="pulse-label"><span class="dot"></span><span id="pulse-text">alive · last answer 2 min ago</span></span>
+      <svg viewBox="0 0 1000 90" preserveAspectRatio="none">
+        <line class="ghost" x1="0" y1="55" x2="1000" y2="55"></line>
+        <path class="trace" id="trace"></path>
+      </svg>
+    </div>
+
+    <div class="hero-row">
+      <p>I wrote a program that <b>only runs after I die</b>. It asks me this every Tuesday. If I stop answering, and two people I trust both confirm it on their phones, it gives each of them what I left for them. Nothing more.</p>
+      <div class="answer" aria-label="The weekly check-in">
+        <small><i class="ph ph-bell-ringing"></i>Tuesday, 21:00 · week 43</small>
+        <button class="yes" id="yes"><i class="ph ph-hand-waving"></i>I'm still here</button>
+        <input class="line" placeholder="Anything changed? (moved my FD to SBI)" aria-label="Optional line">
+        <div class="thanks" id="thanks" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="path-wrap reveal" id="how">
+    <div class="path-head">
+      <h2>The path home</h2>
+      <p>Marigold petals mark the way home for the dead on Día de los Muertos. Here they mark how far the switch has gone. Tap a step to see it.</p>
+    </div>
+    <div class="trail" aria-hidden="true"><svg viewBox="0 0 1000 60" preserveAspectRatio="none" id="trail"></svg></div>
+    <div class="path" role="tablist">
+      <button class="step lit" data-i="0" role="tab"><span class="num">01</span><h3>Alive</h3><p>A push every week. It listens and keeps notes. Nothing else.</p></button>
+      <button class="step" data-i="1" role="tab"><span class="num">02</span><h3>Missed</h3><p>Three silent weeks, then one last chance and a two-day wait.</p></button>
+      <button class="step" data-i="2" role="tab"><span class="num">03</span><h3>Confirming</h3><p>Riya and Kabir each get an Auth0 Guardian push. One "no" stops it.</p></button>
+      <button class="step" data-i="3" role="tab"><span class="num">04</span><h3>Released</h3><p>Auth0 FGA opens what is theirs, and only that.</p></button>
+    </div>
+  </section>
+
+  <section class="after reveal">
+    <div class="altar">
+      <svg viewBox="-30 -110 60 210" id="candle"></svg>
+      <small id="candle-note">unlit while<br>he answers</small>
+    </div>
+    <div class="letter" id="letter">
+      <div class="to" id="letter-to"><i class="ph ph-envelope-simple"></i>For Riya · sealed</div>
+      <div class="sealed" id="sealed">
+        <div class="seal-lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="seal-text"><i class="ph ph-lock-simple"></i>Sealed. Opens only after Riya and Kabir both say yes on their phones.</p>
+        <button class="peek" type="button" data-goto="3"><i class="ph ph-eye"></i>Show it released</button>
+      </div>
+      <p class="ink">Riya, if you're reading this, both you and Kabir said yes, and I'm sorry you had to.</p>
+      <p class="ink">Look after Maa. And finish the Harry Potter rewatch without me. You were right about Snape.</p>
+      <svg class="pressed" viewBox="-110 -110 220 220" id="pressed" aria-hidden="true"></svg>
+    </div>
+    <div class="qa">
+      <div class="locked" id="locked">
+        <p class="q">Riya tries to ask: where is the LIC policy?</p>
+        <p class="a dim">Nothing has been released yet.</p>
+        <p class="gate"><i class="ph ph-lock-key"></i>Search finds 20 notes. FGA lets Riya read 0 of them until release, so the model never sees them.</p>
+      </div>
+      <div class="open-qa" id="open-qa">
+      <p class="q">Riya asks: where is the LIC policy?</p>
+      <p class="a" id="answer-text" data-text="In the blue file in the steel almirah, top shelf. To claim, take the bond, the death certificate and Maa's Aadhaar to the Shankar Nagar branch."></p>
+      <span class="src"><i class="ph ph-note"></i>LIC life insurance policy</span><span class="src"><i class="ph ph-note"></i>Important papers</span>
+      <div class="none">
+        <p class="q">Kabir asks: who is the nominee on his SIPs?</p>
+        <p class="a">Anish didn't leave a note about that.</p>
+        <p class="gate"><i class="ph ph-lock-key"></i>That note is Riya's. FGA kept it from the model.</p>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="numbers reveal">
+    <div><b>6 of 20</b><span>notes FGA let through for Riya's question. The model saw only those.</span></div>
+    <div><b>$0.0031</b><span>to write the family handbook on Ultramarine. 19 lines, each citing a real document.</span></div>
+    <div><b>2 of 2</b><span>phone approvals needed. One "no", or one answer from me, cancels it.</span></div>
+  </section>
+
+  <div class="cta">
+    <a class="btn primary" href="#"><i class="ph ph-play"></i>Watch a week pass in a minute</a>
+    <a class="btn" href="#"><i class="ph ph-github-logo"></i>Source</a>
+  </div>
+
+  <footer>The model that answers is open-weight (gpt-oss-120b). It can run on any host, or on a laptop with the Wi-Fi off.</footer>
+</div>
+
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
+// Seeded random, so the generated art is the same on every visit
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+/* ---------- Cempasúchil (marigold), generated petal by petal ---------- */
+function petalPath(len, wid) {
+  // A ruffled petal: narrow at the base, wide frilled tip
+  const tip = [];
+  const frills = 5;
+  for (let i = 0; i <= frills; i++) {
+    const t = i / frills, x = -wid + 2 * wid * t;
+    const y = -len - (i % 2 ? wid * 0.28 : 0) + Math.abs(x) * 0.25;
+    tip.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+  }
+  return `M0,0 C${-wid * .5},${-len * .3} ${-wid * 1.1},${-len * .6} ${tip[0]} L${tip.join(" L")} C${wid * 1.1},${-len * .6} ${wid * .5},${-len * .3} 0,0 Z`;
+}
+function marigold(svg, { r = 100, layers = 7, colors } = {}) {
+  const g = el("g", {}, svg);
+  const shades = colors || ["#c47a1c", "#d98d27", "#eaa33a", "#efb24d", "#f3bf5f", "#f6c76e", "#f8d38a"];
+  for (let L = 0; L < layers; L++) {
+    const k = 1 - L / layers;
+    const n = Math.round(13 + L * 2);
+    const len = r * (0.35 + 0.62 * k), wid = r * (0.16 + 0.07 * k);
+    const off = rnd() * 360;
+    for (let i = 0; i < n; i++) {
+      const a = off + (360 / n) * i + (rnd() - .5) * 10;
+      el("path", {
+        d: petalPath(len * (0.9 + rnd() * .18), wid * (0.85 + rnd() * .3)),
+        fill: shades[L % shades.length],
+        stroke: "#1a1512", "stroke-opacity": .35, "stroke-width": .8,
+        transform: `rotate(${a.toFixed(1)})`,
+      }, g);
+    }
+  }
+  el("circle", { r: r * .11, fill: "#a5611a" }, g);
+  return g;
+}
+seed = 7; marigold(document.getElementById("bloom"));
+seed = 11; marigold(document.getElementById("logo"), { r: 46, layers: 4 });
+seed = 23; marigold(document.getElementById("pressed"), { r: 100, layers: 5, colors: ["#c9a370", "#d4b07d", "#dfbe8f", "#e6c99c", "#ecd4ab"] });
+
+/* ---------- Papel picado: cut-paper flags with generated patterns ---------- */
+(function picado() {
+  const svg = document.getElementById("picado");
+  const W = 1440, H = 118, n = 14, fw = W / n;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const defs = el("defs", {}, svg);
+  el("path", { d: `M0,6 Q${W / 2},22 ${W},6`, stroke: "#5b4c3f", "stroke-width": 1.2, fill: "none" }, svg);
+  seed = 3;
+  for (let i = 0; i < n; i++) {
+    const x = i * fw + 6, w = fw - 12, h = 92;
+    const sag = 6 + 16 * Math.sin(Math.PI * (i + .5) / n);
+    const mask = el("mask", { id: `m${i}` }, defs);
+    el("rect", { x: 0, y: 0, width: w, height: h, fill: "#fff" }, mask);
+    // Scalloped bottom edge
+    for (let s = 0; s < 8; s++) el("circle", { cx: (w / 8) * (s + .5), cy: h, r: w / 16, fill: "#000" }, mask);
+    // Border dots
+    for (let s = 0; s < 7; s++) el("circle", { cx: (w / 7) * (s + .5), cy: 9, r: 1.8, fill: "#000" }, mask);
+    // Centre motif: one of three cut shapes, made from a small flower, diamonds or a sun
+    const cx = w / 2, cy = h * .5, kind = i % 3;
+    if (kind === 0) for (let p = 0; p < 8; p++) { const a = p * Math.PI / 4; el("ellipse", { cx: cx + Math.cos(a) * 13, cy: cy + Math.sin(a) * 13, rx: 7, ry: 4, transform: `rotate(${p * 45} ${cx + Math.cos(a) * 13} ${cy + Math.sin(a) * 13})`, fill: "#000" }, mask); }
+    if (kind === 1) for (let p = 0; p < 4; p++) el("path", { d: `M${cx},${cy - 24 + p * 14} l7,7 l-7,7 l-7,-7 Z`, fill: "#000" }, mask);
+    if (kind === 2) { el("circle", { cx, cy, r: 9, fill: "#000" }, mask); for (let p = 0; p < 12; p++) { const a = p * Math.PI / 6; el("path", { d: `M${cx + Math.cos(a) * 14},${cy + Math.sin(a) * 14} L${cx + Math.cos(a + .14) * 25},${cy + Math.sin(a + .14) * 25} L${cx + Math.cos(a - .14) * 25},${cy + Math.sin(a - .14) * 25} Z`, fill: "#000" }, mask); } }
+    // Random small cuts around the motif
+    for (let s = 0; s < 6; s++) el("circle", { cx: 10 + rnd() * (w - 20), cy: 18 + rnd() * (h - 40), r: 1.5 + rnd() * 2, fill: "#000" }, mask);
+    // Outer group places the flag; inner group sways (a CSS transform would replace the placement)
+    const holder = el("g", { transform: `translate(${x},${sag})` }, svg);
+    const g = el("g", { class: "flag", style: `animation-delay:${(-i * .45).toFixed(2)}s; transform-box: fill-box` }, holder);
+    const fill = i % 4 === 1 ? "#eaa33a" : i % 4 === 3 ? "#c47a1c" : "#e9dcc6";
+    el("rect", { x: 0, y: 0, width: w, height: h, fill, mask: `url(#m${i})`, opacity: i % 4 === 1 || i % 4 === 3 ? .9 : .82 }, g);
+  }
+})();
+
+/* ---------- Heartbeat trace: alive beats, missed slows, confirming fades, released is flat ---------- */
+const trace = document.getElementById("trace");
+const pulseText = document.getElementById("pulse-text");
+const MODES = [
+  { amp: 1, gap: 150, label: "alive · last answer 2 min ago", op: 1 },
+  { amp: .55, gap: 260, label: "missed · 3 weeks without an answer", op: .8 },
+  { amp: .22, gap: 380, label: "confirming · waiting on Riya and Kabir", op: .55 },
+  { amp: 0, gap: 1000, label: "released · 28 Oct, 21:04", op: .35 },
+];
+let mode = 0, shift = 0;
+function beatPath(amp, gap, phase) {
+  const base = 55; let d = `M0,${base}`;
+  for (let x = -gap + (phase % gap); x < 1000; x += gap) {
+    const pts = [[x + 10, base], [x + 18, base - 6 * amp], [x + 24, base], [x + 30, base + 10 * amp], [x + 36, base - 46 * amp], [x + 42, base + 22 * amp], [x + 48, base], [x + 62, base - 9 * amp], [x + 74, base]];
+    for (const [px, py] of pts) if (px >= 0 && px <= 1000) d += ` L${px.toFixed(1)},${py.toFixed(1)}`;
+  }
+  return d + ` L1000,${base}`;
+}
+let amp = 1, gap = 150;
+function frame() {
+  const m = MODES[mode];
+  amp += (m.amp - amp) * .05; gap += (m.gap - gap) * .05;
+  shift += 1.4;
+  trace.setAttribute("d", beatPath(amp, gap, shift));
+  trace.style.opacity = m.op;
+  if (!reduce) requestAnimationFrame(frame);
+}
+frame();
+
+/* ---------- Petal trail between the states ---------- */
+const trail = document.getElementById("trail");
+seed = 31;
+const trailPetals = [];
+for (let i = 0; i < 70; i++) {
+  const t = i / 69, x = t * 1000, y = 30 + Math.sin(t * Math.PI * 3) * 12 + (rnd() - .5) * 14;
+  const p = el("ellipse", { cx: x, cy: y, rx: 4 + rnd() * 3, ry: 2 + rnd() * 1.4, transform: `rotate(${(rnd() * 180).toFixed(0)} ${x} ${y})`, fill: "#3a3029" }, trail);
+  p.style.transition = `fill .5s ${(i * 12)}ms, opacity .5s`;
+  trailPetals.push({ p, t });
+}
+const steps = [...document.querySelectorAll(".step")];
+function setMode(i) {
+  mode = i;
+  steps.forEach((s, k) => { s.classList.toggle("lit", k === i); s.classList.toggle("past", k < i); s.setAttribute("aria-selected", k === i); });
+  const upto = i / 3 + .02;
+  trailPetals.forEach(({ p, t }) => p.setAttribute("fill", t <= upto ? (t > upto - .1 ? "#f6c76e" : "#eaa33a") : "#3a3029"));
+  pulseText.textContent = MODES[i].label;
+  lightCandle(i === 3);
+  if (reduce) frame();
+}
+steps.forEach((s) => s.addEventListener("click", () => setMode(+s.dataset.i)));
+document.querySelectorAll("[data-goto]").forEach((b) => b.addEventListener("click", () => {
+  setMode(+b.dataset.goto);
+  document.getElementById("how").scrollIntoView({ block: "start" });
+}));
+setMode(0);
+
+/* ---------- Candle on the altar: lit only after release ---------- */
+function lightCandle(on) {
+  const svg = document.getElementById("candle");
+  svg.innerHTML = "";
+  const defs = el("defs", {}, svg);
+  const rg = el("radialGradient", { id: "glow" }, defs);
+  el("stop", { offset: "0", "stop-color": "#f6c76e", "stop-opacity": .55 }, rg);
+  el("stop", { offset: "1", "stop-color": "#f6c76e", "stop-opacity": 0 }, rg);
+  if (on) el("circle", { cx: 0, cy: -62, r: 48, fill: "url(#glow)", class: "halo" }, svg);
+  el("rect", { x: -16, y: -40, width: 32, height: 130, rx: 3, fill: "#e9dcc6" }, svg);
+  el("path", { d: "M-16,-40 Q-10,-30 -12,-14 Q-9,-8 -8,-40 Z", fill: "#d9cab1" }, svg);
+  el("line", { x1: 0, y1: -40, x2: 0, y2: -50, stroke: "#2b221c", "stroke-width": 2 }, svg);
+  el("rect", { x: -28, y: 88, width: 56, height: 8, rx: 2, fill: "#3a3029" }, svg);
+  if (on) {
+    const f = el("path", { d: "M0,-50 C-9,-60 -7,-74 0,-92 C7,-74 9,-60 0,-50 Z", fill: "#eaa33a", class: "flame" }, svg);
+    el("path", { d: "M0,-52 C-4,-58 -3,-66 0,-74 C3,-66 4,-58 0,-52 Z", fill: "#fbe3a8" }, svg);
+    if (!reduce) (function flick() { if (!f.isConnected) return; const s = .92 + Math.random() * .16, r = (Math.random() - .5) * 6; f.setAttribute("transform", `rotate(${r.toFixed(1)} 0 -50) scale(${(s * .97).toFixed(3)} ${s.toFixed(3)})`); f.style.transformOrigin = "0 -50px"; setTimeout(flick, 70 + Math.random() * 90); })();
+  }
+  document.getElementById("candle-note").innerHTML = on ? "lit on<br>28 Oct" : "unlit while<br>he answers";
+  document.getElementById("letter").classList.toggle("open", on);
+  document.querySelector(".after").classList.toggle("released", on);
+  document.getElementById("letter-to").innerHTML = on
+    ? '<i class="ph ph-envelope-simple-open"></i>For Riya · opened after both said yes'
+    : '<i class="ph ph-envelope-simple"></i>For Riya · sealed';
+  if (on) typeAnswer();
+}
+
+/* ---------- The family answer types itself out once released ---------- */
+let typed = false;
+function typeAnswer() {
+  const a = document.getElementById("answer-text");
+  if (typed) return; typed = true; setTimeout(() => (typed = false), 100);
+  const text = a.dataset.text;
+  if (reduce) { a.textContent = text; return; }
+  a.classList.add("typing"); let i = 0;
+  (function step() { a.textContent = text.slice(0, i); if (i++ <= text.length) setTimeout(step, 16); else a.classList.remove("typing"); })();
+}
+document.getElementById("answer-text").textContent = document.getElementById("answer-text").dataset.text;
+typed = false;
+
+/* ---------- Drifting petals; a burst when he answers ---------- */
+const cv = document.getElementById("petals"), cx = cv.getContext("2d");
+let W, H, petals = [];
+function size() { W = cv.width = innerWidth * devicePixelRatio; H = cv.height = innerHeight * devicePixelRatio; }
+size(); addEventListener("resize", size);
+const COLORS = ["#eaa33a", "#c47a1c", "#f6c76e"];
+function spawn(x, y, burst) {
+  const s = devicePixelRatio;
+  return { x: x ?? Math.random() * W, y: y ?? -20, r: (3 + Math.random() * 4) * s, a: Math.random() * 6.28, va: (Math.random() - .5) * .04,
+    vx: burst ? (Math.random() - .5) * 9 * s : (Math.random() - .3) * .4 * s, vy: burst ? (-Math.random() * 8 - 2) * s : (.3 + Math.random() * .5) * s,
+    c: COLORS[(Math.random() * 3) | 0], life: burst ? 1 : 0.5, burst, sway: Math.random() * 6.28 };
+}
+for (let i = 0; i < 26; i++) { const p = spawn(); p.y = Math.random() * H; petals.push(p); }
+function draw() {
+  cx.clearRect(0, 0, W, H);
+  for (const p of petals) {
+    p.sway += .02; p.x += p.vx + Math.sin(p.sway) * .3 * devicePixelRatio; p.y += p.vy; p.a += p.va;
+    if (p.burst) { p.vy += .18 * devicePixelRatio; p.vx *= .985; p.life -= .006; }
+    cx.save(); cx.translate(p.x, p.y); cx.rotate(p.a); cx.globalAlpha = Math.max(0, p.life) * .9;
+    cx.fillStyle = p.c; cx.beginPath(); cx.ellipse(0, 0, p.r, p.r * .55, 0, 0, 6.28); cx.fill(); cx.restore();
+  }
+  petals = petals.filter((p) => p.life > 0 && p.y < H + 40);
+  while (petals.filter((p) => !p.burst).length < 26) petals.push(spawn());
+  requestAnimationFrame(draw);
+}
+if (!reduce) draw();
+
+document.getElementById("yes").addEventListener("click", (e) => {
+  const r = e.currentTarget.getBoundingClientRect(), s = devicePixelRatio;
+  if (!reduce) for (let i = 0; i < 60; i++) petals.push(spawn((r.left + r.width / 2) * s, (r.top + r.height / 2) * s, true));
+  document.getElementById("thanks").textContent = "Answered. The clock starts again. See you next Tuesday.";
+  setMode(0);
+});
+
+/* ---------- Sections rise in once ---------- */
+const io = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.add("in"); io.unobserve(x.target); } }), { threshold: .15 });
+document.querySelectorAll(".reveal").forEach((n) => io.observe(n));
+</script>
+</body>
+</html>

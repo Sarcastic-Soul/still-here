@@ -8,11 +8,12 @@
         "@auth0/nextjs-auth0": "^4.33.0",
         "@huggingface/transformers": "^4.3.1",
         "@openfga/sdk": "^0.9.7",
+        "@phosphor-icons/react": "^2.1.10",
         "docx": "^9.15.0",
-        "next": "16",
+        "next": "16.4.3",
         "postgres": "^3.4.9",
-        "react": "19",
-        "react-dom": "19",
+        "react": "19.3.1",
+        "react-dom": "19.3.1",
         "server-only": "^0.0.1",
         "zod": "^4.6.7",
       },
@@ -117,6 +118,8 @@
     "@opentelemetry/api": ["@opentelemetry/api@1.10.0", "", {}, "sha512-lMkyes8iHrG+mk6WH7X70MdCLI2RS0FwNBY1PyQ8UemaijE2m5mv5A0Niy3HtbYTFrgkUEQjFMXmSAk2hQDuPQ=="],
 
     "@panva/hkdf": ["@panva/hkdf@1.2.1", "", {}, "sha512-6oclG6Y3PiDFcoyk8srjLfVKyMfVCKJ27JwNPViuXziFpmdz+MZnZN/aKY0JGXgYuO/VghU0jcOAZgWXZ1Dmrw=="],
+
+    "@phosphor-icons/react": ["@phosphor-icons/react@2.1.10", "", { "peerDependencies": { "react": ">= 16.8", "react-dom": ">= 16.8" } }, "sha512-vt8Tvq8GLjheAZZYa+YG/pW7HDbov8El/MANW8pOAz4eGxrwhnbfrQZq0Cp4q8zBEu8NIhHdnr+r8thnfRSNYA=="],
 
     "@protobufjs/aspromise": ["@protobufjs/aspromise@1.1.2", "", {}, "sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ=="],
 

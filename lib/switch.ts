@@ -30,6 +30,7 @@ async function sendPing(tx: Tx, vault: Vault, kind: "regular" | "last_chance") {
   const sent = vault.is_demo
     ? false
     : await push({
+        topic: vault.ntfy_topic,
         title: kind === "last_chance" ? "Last chance: are you still here?" : "Are you still here?",
         message:
           kind === "last_chance"
@@ -85,12 +86,24 @@ async function cancelToAlive(tx: Tx, vaultId: string, now: Date, reason: string,
   await audit(vaultId, actor, "back_to_alive", { reason }, tx);
 }
 
+// Whether a tick could change anything, judged from an unlocked read
+function due(s: SwitchRow, now: Date, vault?: Vault) {
+  if (s.state === "alive") return secondsSince(s.last_ping_at ?? s.last_answer_at, now) >= s.every_seconds;
+  if (s.state === "missed") return secondsSince(s.last_chance_at, now) >= s.grace_seconds;
+  // Demo approvals arrive through demoDecide, which ticks itself; real ones are polled from Auth0
+  return s.state === "confirming" && !vault?.is_demo;
+}
+
 // Moves the switch forward if it is time. Safe to call as often as you like (cron, page poll).
-export async function tick(vaultId: string, now = new Date()) {
-  const vault = await getVaultById(vaultId);
+export async function tick(vaultId: string, now = new Date(), known?: Vault) {
+  const [peek] = await sql<SwitchRow[]>`select * from switch where vault_id = ${vaultId}`;
+  if (!peek || !due(peek, now, known)) return peek?.state;
+  const vault = known ?? (await getVaultById(vaultId));
   if (!vault) throw new Error(`no vault ${vaultId}`);
   return sql.begin(async (tx) => {
-    const [s] = await tx<SwitchRow[]>`select * from switch where vault_id = ${vaultId} for update`;
+    // Another tick holds the row (page polls overlap): let that one do the work
+    const [s] = await tx<SwitchRow[]>`select * from switch where vault_id = ${vaultId} for update skip locked`;
+    if (!s) return (await tx<SwitchRow[]>`select state from switch where vault_id = ${vaultId}`)[0].state;
     if (s.state === "alive") {
       const since = secondsSince(s.last_ping_at ?? s.last_answer_at, now);
       if (since < s.every_seconds) return s.state;
@@ -112,7 +125,7 @@ export async function tick(vaultId: string, now = new Date()) {
       const round = s.round + 1;
       await tx`update switch set state = 'confirming', round = ${round}, updated_at = ${now} where vault_id = ${vaultId}`;
       await audit(vaultId, "system", "state_confirming", { round }, tx);
-      const trusted = (await getPeople(vaultId)).filter((p) => p.role === "trusted");
+      const trusted = (await getPeople(vaultId, tx)).filter((p) => p.role === "trusted");
       for (const p of trusted) await askPerson(tx, vault, { ...s, round }, p, now);
       return "confirming";
     }
@@ -120,7 +133,7 @@ export async function tick(vaultId: string, now = new Date()) {
     if (s.state === "confirming") {
       const rows = await tx<{ id: string; person_id: string; auth_req_id: string | null; status: string; expires_at: Date | null }[]>`
         select id, person_id, auth_req_id, status, expires_at from approvals where vault_id = ${vaultId} and round = ${s.round}`;
-      const trusted = (await getPeople(vaultId)).filter((p) => p.role === "trusted");
+      const trusted = (await getPeople(vaultId, tx)).filter((p) => p.role === "trusted");
       for (const r of rows) {
         if (r.status !== "pending" || !r.auth_req_id) continue;
         const state = await checkApproval(r.auth_req_id);

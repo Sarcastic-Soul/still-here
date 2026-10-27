@@ -1,6 +1,7 @@
+import type postgres from "postgres";
 import { sql } from "./db";
 
-export type Vault = { id: string; slug: string; owner_name: string; is_demo: boolean };
+export type Vault = { id: string; slug: string; owner_name: string; is_demo: boolean; ntfy_topic: string | null };
 export type Person = {
   id: string;
   vault_id: string;
@@ -27,17 +28,17 @@ export type SwitchRow = {
 };
 
 export async function getVault(slug: string): Promise<Vault | null> {
-  const [v] = await sql<Vault[]>`select id, slug, owner_name, is_demo from vaults where slug = ${slug}`;
+  const [v] = await sql<Vault[]>`select id, slug, owner_name, is_demo, ntfy_topic from vaults where slug = ${slug}`;
   return v ?? null;
 }
 
 export async function getVaultById(id: string): Promise<Vault | null> {
-  const [v] = await sql<Vault[]>`select id, slug, owner_name, is_demo from vaults where id = ${id}`;
+  const [v] = await sql<Vault[]>`select id, slug, owner_name, is_demo, ntfy_topic from vaults where id = ${id}`;
   return v ?? null;
 }
 
-export async function getPeople(vaultId: string): Promise<Person[]> {
-  return sql<Person[]>`select id, vault_id, role, name, relation, email, auth0_sub from people where vault_id = ${vaultId} order by role, name`;
+export async function getPeople(vaultId: string, db: typeof sql | postgres.TransactionSql = sql): Promise<Person[]> {
+  return db<Person[]>`select id, vault_id, role, name, relation, email, auth0_sub from people where vault_id = ${vaultId} order by role, name`;
 }
 
 export async function getPerson(id: string): Promise<Person | null> {

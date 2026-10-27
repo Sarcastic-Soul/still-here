@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Still Here — Option 1: Sealed Envelope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  :root {
+    --paper: #f3ece0;
+    --paper-2: #e9dfcf;
+    --ink: #2a2320;
+    --ink-soft: #5e534b;
+    --rule: #cfc2ad;
+    --seal: #8a2b22;       /* oxblood wax, the only accent */
+    --seal-ink: #f6eee4;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--paper); color: var(--ink); font: 16px/1.6 "Manrope", sans-serif; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 26px 0; border-bottom: 1px solid var(--rule); }
+  .mark { font-family: "Newsreader", serif; font-size: 22px; font-style: italic; }
+  nav a { color: var(--ink-soft); text-decoration: none; font-size: 14px; margin-left: 26px; }
+
+  .hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 64px; padding: 88px 0 72px; align-items: start; }
+  .kicker { font-size: 13px; letter-spacing: .02em; color: var(--ink-soft); margin-bottom: 22px; }
+  h1 { font-family: "Newsreader", serif; font-weight: 400; font-size: clamp(48px, 6.6vw, 92px); line-height: .98; letter-spacing: -.02em; }
+  h1 em { color: var(--seal); }
+  .lede { font-size: 19px; max-width: 34ch; margin-top: 30px; color: var(--ink-soft); }
+  .cta { display: flex; gap: 14px; margin-top: 38px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 2px; font: 600 15px "Manrope"; text-decoration: none; border: 1px solid var(--ink); color: var(--ink); }
+  .btn.primary { background: var(--seal); border-color: var(--seal); color: var(--seal-ink); }
+
+  /* The envelope: state of the switch shown as a wax seal, unbroken until release */
+  .envelope { position: relative; background: var(--paper-2); border: 1px solid var(--rule); padding: 34px 32px 30px; margin-top: 12px; transform: rotate(1.2deg); box-shadow: 0 1px 0 var(--rule), 0 24px 40px -28px rgba(42,35,32,.45); }
+  .envelope::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 46%; background: linear-gradient(to bottom right, transparent 49.6%, var(--rule) 50%, transparent 50.4%), linear-gradient(to bottom left, transparent 49.6%, var(--rule) 50%, transparent 50.4%); background-size: 50% 100%; background-position: left, right; background-repeat: no-repeat; pointer-events: none; }
+  .to { position: relative; display: inline-block; background: var(--paper-2); padding-right: 8px; font-family: "Newsreader", serif; font-style: italic; font-size: 20px; }
+  .seal { width: 92px; height: 92px; border-radius: 50%; background: var(--seal); color: var(--seal-ink); display: grid; place-items: center; margin: 54px auto 28px; font-family: "Newsreader", serif; font-size: 30px; font-style: italic; box-shadow: inset 0 0 0 6px rgba(0,0,0,.12); }
+  .env-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; font-size: 14px; border-top: 1px dashed var(--rule); padding-top: 18px; }
+  .env-meta dt { color: var(--ink-soft); font-size: 12px; }
+  .env-meta dd { font-variant-numeric: tabular-nums; }
+
+  .states { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: repeat(4, 1fr); }
+  .state { padding: 28px 22px 30px; border-right: 1px solid var(--rule); }
+  .state:last-child { border-right: 0; }
+  .state .n { font-family: "Newsreader", serif; font-size: 44px; line-height: 1; color: var(--rule); }
+  .state.on .n { color: var(--seal); }
+  .state h3 { font-family: "Newsreader", serif; font-weight: 500; font-size: 22px; margin: 10px 0 6px; }
+  .state p { font-size: 14px; color: var(--ink-soft); }
+
+  .after { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 64px; padding: 88px 0; }
+  .after h2 { font-family: "Newsreader", serif; font-weight: 400; font-size: 44px; line-height: 1.05; }
+  .after .side p { color: var(--ink-soft); margin-top: 18px; max-width: 36ch; }
+  .ask { border-left: 3px solid var(--seal); padding: 4px 0 4px 28px; }
+  .q { font-size: 14px; color: var(--ink-soft); }
+  .q b { color: var(--ink); font-weight: 600; }
+  .a { font-family: "Newsreader", serif; font-size: 26px; line-height: 1.35; margin: 12px 0 18px; }
+  .cite { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; border: 1px solid var(--rule); padding: 6px 12px; margin: 0 8px 8px 0; }
+  .nope { margin-top: 34px; padding-top: 24px; border-top: 1px dashed var(--rule); }
+  .nope .a { color: var(--ink-soft); font-style: italic; font-size: 22px; }
+  .fga { font-size: 13px; color: var(--ink-soft); display: flex; gap: 8px; align-items: center; }
+
+  footer { border-top: 1px solid var(--rule); padding: 26px 0 40px; font-size: 13px; color: var(--ink-soft); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  a:focus-visible, .btn:focus-visible { outline: 2px solid var(--seal); outline-offset: 3px; }
+
+  @media (max-width: 860px) {
+    .hero, .after { grid-template-columns: 1fr; gap: 44px; padding: 56px 0; }
+    .states { grid-template-columns: 1fr 1fr; }
+    .state:nth-child(2) { border-right: 0; }
+    .state:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+    nav a:not(:last-child) { display: none; }
+    .envelope { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <span class="mark">Still Here</span>
+    <span><a href="#">How it decides</a><a href="#">Source</a><a href="#">Try the demo vault</a></span>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <p class="kicker">A program that only runs after I die</p>
+      <h1>Every week it asks one question: <em>are you still here?</em></h1>
+      <p class="lede">While I answer, it only listens. If I stop, two people I trust must both confirm on their phones. Then each of them gets the letter and the facts I left for them, and nothing else.</p>
+      <div class="cta">
+        <a class="btn primary" href="#"><i class="ph ph-envelope-open"></i>Open the demo vault</a>
+        <a class="btn" href="#"><i class="ph ph-github-logo"></i>Read the code</a>
+      </div>
+    </div>
+    <aside class="envelope" aria-label="Current state of the demo vault">
+      <div class="to">To Riya and Kabir,<br>only when you both say yes.</div>
+      <div class="seal" aria-hidden="true">S</div>
+      <dl class="env-meta">
+        <div><dt>State</dt><dd>Alive, sealed</dd></div>
+        <div><dt>Last answer</dt><dd>Tue 27 Oct, 21:04</dd></div>
+        <div><dt>Missed in a row</dt><dd>0 of 3</dd></div>
+        <div><dt>Inside</dt><dd>2 letters, 24 notes</dd></div>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="states" aria-label="The four states">
+    <div class="state on"><div class="n">i</div><h3>Alive</h3><p>A push every week. One tap answers it, with an optional line like "moved my FD to SBI".</p></div>
+    <div class="state"><div class="n">ii</div><h3>Missed</h3><p>Three weeks without an answer. One last-chance push, then a two-day wait.</p></div>
+    <div class="state"><div class="n">iii</div><h3>Confirming</h3><p>Auth0 sends each trusted person a Guardian push. One "no", or my own answer, stops it.</p></div>
+    <div class="state"><div class="n">iv</div><h3>Released</h3><p>Auth0 FGA opens each person's letters and notes. Only theirs.</p></div>
+  </section>
+
+  <section class="after">
+    <div class="side">
+      <h2>Afterwards, my family can ask my notes.</h2>
+      <p>An open model answers from the notes that person is allowed to read, and cites them. Code checks every citation. If I didn't write it down, it says so.</p>
+    </div>
+    <div>
+      <div class="ask">
+        <p class="q"><b>Riya</b> asked: where is the LIC policy?</p>
+        <p class="a">The bond is in the blue file in the steel almirah, top shelf. To claim, go to the Shankar Nagar branch with the death certificate, the bond and Maa's Aadhaar.</p>
+        <span class="cite"><i class="ph ph-note"></i>LIC life insurance policy</span><span class="cite"><i class="ph ph-note"></i>Where the important papers are</span>
+        <p class="fga"><i class="ph ph-lock-key"></i>Search found 20 notes. FGA let 6 through for Riya.</p>
+      </div>
+      <div class="ask nope">
+        <p class="q"><b>Kabir</b> asked: who is the nominee on his SIPs?</p>
+        <p class="a">Anish didn't leave a note about that.</p>
+        <p class="fga"><i class="ph ph-lock-key"></i>That note is Riya's. It never reached the model.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Open model: gpt-oss-120b. Runs on any host, or a laptop with the Wi-Fi off.</span>
+    <span>Built for Hacktoberfest 2026, Week 4.</span>
+  </footer>
+</div>
+</body>
+</html>

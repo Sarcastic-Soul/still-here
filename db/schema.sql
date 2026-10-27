@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS vaults (
   is_demo     boolean NOT NULL DEFAULT false,
   created_at  timestamptz NOT NULL DEFAULT now()
 );
+-- Each vault pushes to its own ntfy topic, a random name only the owner knows
+ALTER TABLE vaults ADD COLUMN IF NOT EXISTS ntfy_topic text;
 
 -- The owner and the people the owner trusts. Trusted people approve the release (CIBA)
 -- and receive letters and notes. auth0_sub is filled the first time they sign in.

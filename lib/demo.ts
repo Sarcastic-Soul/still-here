@@ -2,10 +2,13 @@
 import { sql } from "./db";
 import { getVault, type Vault } from "./vault";
 
+// The demo vault never changes id while the server runs (re-seeding means a restart)
+let cached: Vault | null = null;
 export async function demoVault(): Promise<Vault> {
+  if (cached) return cached;
   const v = await getVault("demo");
   if (!v) throw new Error("demo vault missing: run bun run seed");
-  return v;
+  return (cached = v);
 }
 
 export async function demoPerson(vaultId: string, personId: unknown) {

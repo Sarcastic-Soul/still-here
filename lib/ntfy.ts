@@ -1,8 +1,8 @@
 // "Are you still here?" goes out as an ntfy.sh push with a one-tap answer button.
 import { maybe, need } from "./env";
 
-export async function push(opts: { title: string; message: string; click?: string; actions?: { label: string; url: string; method?: "POST" }[]; priority?: 3 | 4 | 5 }) {
-  const topic = maybe("NTFY_TOPIC");
+export async function push(opts: { topic?: string | null; title: string; message: string; click?: string; actions?: { label: string; url: string; method?: "POST" }[]; priority?: 3 | 4 | 5 }) {
+  const topic = opts.topic ?? maybe("NTFY_TOPIC");
   if (!topic) return false;
   const res = await fetch(`https://ntfy.sh`, {
     method: "POST",

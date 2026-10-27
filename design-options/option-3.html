@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Still Here — Option 3: Marigold at Night</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  :root {
+    --night: #1c1714;      /* warm charcoal, not navy */
+    --night-2: #262019;
+    --line: #3a322a;
+    --text: #efe6d8;
+    --soft: #a89a87;
+    --marigold: #e8a33a;   /* the only accent */
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--night); color: var(--text); font: 16px/1.6 "Geist", sans-serif; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; font-size: 14px; color: var(--soft); }
+  nav .name { font-family: "Instrument Serif"; font-size: 24px; color: var(--text); }
+  nav a { color: var(--soft); text-decoration: none; margin-left: 24px; }
+
+  .hero { padding: 120px 0 96px; position: relative; }
+  .ask-line { font-family: "Instrument Serif"; font-size: clamp(64px, 11vw, 168px); line-height: .9; letter-spacing: -.02em; max-width: 9ch; }
+  .ask-line i { color: var(--marigold); }
+  .hero-row { display: grid; grid-template-columns: 1fr 360px; gap: 48px; margin-top: 56px; align-items: end; }
+  .hero-row p { color: var(--soft); font-size: 19px; max-width: 42ch; }
+  .answer { border: 1px solid var(--line); background: var(--night-2); padding: 22px; }
+  .answer small { color: var(--soft); font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .yes { margin-top: 16px; width: 100%; min-height: 56px; border: 0; background: var(--marigold); color: var(--night); font: 600 17px "Geist"; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
+  .line { margin-top: 10px; width: 100%; min-height: 46px; background: transparent; border: 1px solid var(--line); color: var(--text); padding: 0 14px; font: 15px "Geist"; }
+  .line::placeholder { color: var(--soft); }
+
+  /* The path: four marks along one line, the current one lit */
+  .path { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+  .step { padding: 26px 24px 34px 0; position: relative; }
+  .step::before { content: ""; position: absolute; top: -5px; left: 0; width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+  .step.lit::before { background: var(--marigold); box-shadow: 0 0 0 5px rgba(232,163,58,.18); }
+  .step h3 { font-family: "Instrument Serif"; font-weight: 400; font-size: 30px; }
+  .step.lit h3 { color: var(--marigold); }
+  .step p { color: var(--soft); font-size: 14px; max-width: 26ch; }
+
+  .after { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 96px 0; border: 1px solid var(--line); }
+  .letter { padding: 44px; background: var(--text); color: var(--night); }
+  .letter .to { font-size: 13px; color: #6e6152; margin-bottom: 18px; display: flex; gap: 8px; align-items: center; }
+  .letter p { font-family: "Instrument Serif"; font-size: 25px; line-height: 1.35; }
+  .letter p + p { margin-top: 14px; }
+  .qa { padding: 44px; }
+  .qa .q { color: var(--soft); font-size: 14px; }
+  .qa .a { font-size: 21px; margin: 12px 0 18px; }
+  .src { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; color: var(--marigold); border-bottom: 1px solid currentColor; margin-right: 14px; }
+  .qa .none { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); }
+  .qa .none .a { font-family: "Instrument Serif"; font-style: italic; font-size: 26px; color: var(--soft); }
+  .gate { margin-top: 14px; font-size: 13px; color: var(--soft); display: flex; gap: 8px; align-items: center; }
+
+  .cta { display: flex; gap: 14px; flex-wrap: wrap; padding-bottom: 72px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 22px; text-decoration: none; font: 500 15px "Geist"; border: 1px solid var(--line); color: var(--text); }
+  .btn.primary { border-color: var(--marigold); color: var(--marigold); }
+  footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--soft); font-size: 13px; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--marigold); outline-offset: 3px; }
+
+  @media (max-width: 860px) {
+    .hero { padding: 56px 0 56px; }
+    .hero-row, .after { grid-template-columns: 1fr; }
+    .path { grid-template-columns: 1fr 1fr; row-gap: 8px; }
+    .letter, .qa { padding: 28px; }
+    nav a:not(:last-child) { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav><span class="name">Still Here</span><span><a href="#">How it decides</a><a href="#">Source</a></span></nav>
+
+  <section class="hero">
+    <h1 class="ask-line">Are you <i>still</i> here?</h1>
+    <div class="hero-row">
+      <p>I wrote a program that only runs after I die. It asks me this every week. If I stop answering, and two people I trust both confirm it, it gives each of them what I left for them.</p>
+      <div class="answer" aria-label="The weekly check-in">
+        <small><i class="ph ph-bell-ringing"></i>Tuesday, 21:00 · week 43</small>
+        <button class="yes"><i class="ph ph-hand-waving"></i>I'm still here</button>
+        <input class="line" placeholder="Anything changed? (moved my FD to SBI)" aria-label="Optional line">
+      </div>
+    </div>
+  </section>
+
+  <section class="path" aria-label="The four states">
+    <div class="step lit"><h3>Alive</h3><p>It listens and keeps notes. Nothing else.</p></div>
+    <div class="step"><h3>Missed</h3><p>Three silent weeks, then one last chance.</p></div>
+    <div class="step"><h3>Confirming</h3><p>Riya and Kabir each get an Auth0 Guardian push.</p></div>
+    <div class="step"><h3>Released</h3><p>Auth0 FGA opens what is theirs, and only that.</p></div>
+  </section>
+
+  <section class="after">
+    <div class="letter">
+      <div class="to"><i class="ph ph-envelope-simple-open"></i>For Riya · opened after both said yes</div>
+      <p>Riya, if you're reading this, both you and Kabir said yes, and I'm sorry you had to.</p>
+      <p>Look after Maa. And finish the Harry Potter rewatch without me. You were right about Snape.</p>
+    </div>
+    <div class="qa">
+      <p class="q">Riya asks: where is the LIC policy?</p>
+      <p class="a">In the blue file in the steel almirah, top shelf. To claim, take the bond, the death certificate and Maa's Aadhaar to the Shankar Nagar branch.</p>
+      <span class="src"><i class="ph ph-note"></i>LIC life insurance policy</span><span class="src"><i class="ph ph-note"></i>Important papers</span>
+      <div class="none">
+        <p class="q">Kabir asks: who is the nominee on his SIPs?</p>
+        <p class="a">Anish didn't leave a note about that.</p>
+        <p class="gate"><i class="ph ph-lock-key"></i>That note is Riya's. FGA kept it from the model.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <a class="btn primary" href="#"><i class="ph ph-play"></i>Watch a week pass in a minute</a>
+    <a class="btn" href="#"><i class="ph ph-github-logo"></i>Source</a>
+  </div>
+
+  <footer>The model that answers is open-weight (gpt-oss-120b). It can run on any host, or on a laptop with the Wi-Fi off.</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Still Here — Option 2: Pulse Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  :root {
+    --bg: #eef0ec;
+    --panel: #e4e7e1;
+    --ink: #161a17;
+    --soft: #545b55;
+    --line: #c3c8c0;
+    --signal: #d4501e;   /* railway signal orange, the only accent */
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font: 15px/1.55 "IBM Plex Sans", sans-serif; }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+  header { display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: center; padding: 18px 0; border-bottom: 2px solid var(--ink); font-family: "IBM Plex Mono", monospace; font-size: 13px; }
+  header b { font-family: "Space Grotesk"; font-size: 18px; letter-spacing: -.01em; }
+  header .live { display: inline-flex; align-items: center; gap: 8px; color: var(--soft); }
+  header .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--signal); }
+  header a { color: var(--ink); }
+
+  .hero { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 64px 0 40px; }
+  .hero h1 { grid-column: 1 / 9; font-family: "Space Grotesk"; font-weight: 700; font-size: clamp(46px, 7.4vw, 108px); line-height: .92; letter-spacing: -.035em; }
+  .hero h1 span { color: var(--signal); }
+  .hero .side { grid-column: 9 / 13; align-self: end; }
+  .hero .side p { color: var(--soft); font-size: 16px; }
+  .cta { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 18px; font: 500 14px "IBM Plex Mono"; text-decoration: none; color: var(--ink); border: 2px solid var(--ink); }
+  .btn.primary { background: var(--ink); color: var(--bg); }
+
+  /* A year of weekly answers, one cell per week. The gap at the end is the switch counting. */
+  .pulse { border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); padding: 22px 0 26px; }
+  .pulse .row { display: flex; justify-content: space-between; font: 12px "IBM Plex Mono"; color: var(--soft); margin-bottom: 12px; }
+  .cells { display: grid; grid-template-columns: repeat(52, 1fr); gap: 3px; }
+  .cells i { height: 34px; background: var(--ink); }
+  .cells i.miss { background: transparent; border: 1px solid var(--signal); }
+  .cells i.now { background: var(--signal); }
+
+  .grid { display: grid; grid-template-columns: 5fr 7fr; gap: 0; border-bottom: 1px solid var(--line); }
+  .log { border-right: 1px solid var(--line); padding: 28px 28px 32px 0; }
+  .log h2, .ask h2 { font: 500 12px "IBM Plex Mono"; color: var(--soft); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 16px; }
+  .log table { width: 100%; border-collapse: collapse; font: 13px "IBM Plex Mono"; }
+  .log td { padding: 9px 0; border-bottom: 1px dashed var(--line); vertical-align: top; }
+  .log td:first-child { color: var(--soft); width: 92px; }
+  .log tr.hot td:last-child { color: var(--signal); }
+  .ask { padding: 28px 0 32px 32px; }
+  .q { font-family: "Space Grotesk"; font-size: 28px; font-weight: 500; letter-spacing: -.01em; }
+  .q small { display: block; font: 12px "IBM Plex Mono"; color: var(--soft); margin-bottom: 6px; letter-spacing: 0; }
+  .a { font-size: 18px; margin: 16px 0; max-width: 56ch; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font: 12px "IBM Plex Mono"; border: 1px solid var(--ink); padding: 5px 10px; display: inline-flex; gap: 6px; align-items: center; }
+  .meter { display: grid; grid-template-columns: repeat(20, 1fr); gap: 2px; margin-top: 22px; max-width: 420px; }
+  .meter i { height: 10px; background: var(--line); }
+  .meter i.ok { background: var(--ink); }
+  .meter + p { font: 12px "IBM Plex Mono"; color: var(--soft); margin-top: 8px; }
+
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .fact { padding: 26px 24px 30px 0; border-right: 1px solid var(--line); }
+  .fact + .fact { padding-left: 24px; }
+  .fact:last-child { border-right: 0; }
+  .fact .big { font-family: "Space Grotesk"; font-size: 46px; font-weight: 500; letter-spacing: -.02em; }
+  .fact p { color: var(--soft); font-size: 14px; }
+  footer { border-top: 2px solid var(--ink); padding: 18px 0 36px; font: 12px "IBM Plex Mono"; color: var(--soft); }
+  a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+  @media (max-width: 860px) {
+    header { grid-template-columns: 1fr auto; } header .live { display: none; }
+    .hero h1, .hero .side { grid-column: 1 / -1; }
+    .cells { grid-template-columns: repeat(26, 1fr); } .cells i { height: 22px; }
+    .grid, .facts { grid-template-columns: 1fr; }
+    .log { border-right: 0; padding-right: 0; border-bottom: 1px solid var(--line); }
+    .ask { padding-left: 0; }
+    .fact, .fact + .fact { padding-left: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <b>Still Here</b>
+    <span class="live"><span class="dot"></span>demo vault · state ALIVE · next ping in 4 s</span>
+    <a href="#">source</a>
+  </header>
+
+  <section class="hero">
+    <h1>A program that only runs after I <span>die.</span></h1>
+    <div class="side">
+      <p>One push a week: "Are you still here?" Three weeks of silence and a last chance later, two trusted people must both approve on their phones. Code, not the model, decides every step.</p>
+      <div class="cta">
+        <a class="btn primary" href="#"><i class="ph ph-play"></i>run the demo</a>
+        <a class="btn" href="#"><i class="ph ph-list-checks"></i>audit log</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="pulse" aria-label="A year of weekly check-ins">
+    <div class="row"><span>52 weeks of answers</span><span>3 missed in a row = last chance</span></div>
+    <div class="cells">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="miss"></i><i class="miss"></i><i class="now"></i>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="log">
+      <h2>Audit log (append-only, on Tiger)</h2>
+      <table>
+        <tr><td>21:04:12</td><td>ping_sent</td></tr>
+        <tr><td>21:04:18</td><td>ping_sent · missed 1</td></tr>
+        <tr><td>21:04:24</td><td>ping_sent · missed 2</td></tr>
+        <tr class="hot"><td>21:04:30</td><td>last_chance_sent</td></tr>
+        <tr class="hot"><td>21:04:36</td><td>approval_requested · Riya, Kabir</td></tr>
+        <tr><td>21:04:51</td><td>approval_approved · Kabir</td></tr>
+        <tr><td>21:04:55</td><td>approval_approved · Riya</td></tr>
+        <tr class="hot"><td>21:04:55</td><td>released · FGA tuple written</td></tr>
+      </table>
+    </div>
+    <div class="ask">
+      <h2>Ask Anish's notes · as Riya</h2>
+      <p class="q"><small>question</small>Where is the LIC policy?</p>
+      <p class="a">The bond is in the blue file in the steel almirah, top shelf. To claim, go to the Shankar Nagar branch with the death certificate, the bond and Maa's Aadhaar.</p>
+      <div class="chips"><span class="chip"><i class="ph ph-file-text"></i>LIC life insurance policy</span><span class="chip"><i class="ph ph-file-text"></i>Where the important papers are</span></div>
+      <div class="meter" aria-hidden="true"><i class="ok"></i><i class="ok"></i><i></i><i class="ok"></i><i></i><i></i><i class="ok"></i><i></i><i></i><i class="ok"></i><i></i><i></i><i></i><i class="ok"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <p>hybrid search: 20 notes · Auth0 FGA allowed 6 for Riya · model saw only those</p>
+    </div>
+  </section>
+
+  <section class="facts">
+    <div class="fact"><div class="big mono">19 / 19</div><p>Handbook items kept: each one cites a real document.</p></div>
+    <div class="fact"><div class="big mono">$0.0031</div><p>Ultramarine handbook run: 983 tokens in, 5,859 out.</p></div>
+    <div class="fact"><div class="big mono">2 / 2</div><p>Guardian approvals needed. One "no" cancels everything.</p></div>
+  </section>
+
+  <footer>open model gpt-oss-120b on groq · same prompt runs on llama.cpp offline · hacktoberfest 2026 week 4</footer>
+</div>
+</body>
+</html>

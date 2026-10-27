@@ -2,12 +2,12 @@
 import { demoVault } from "@/lib/demo";
 import { json } from "@/lib/http";
 import { vaultStatus } from "@/lib/status";
-import { tick } from "@/lib/switch";
+import { freshDemoTick } from "@/lib/demo-fresh";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   const v = await demoVault();
-  await tick(v.id);
+  await freshDemoTick(v);
   return json(await vaultStatus(v.id));
 }

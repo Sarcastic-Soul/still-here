@@ -19,6 +19,7 @@
     "@auth0/nextjs-auth0": "^4.33.0",
     "@huggingface/transformers": "^4.3.1",
     "@openfga/sdk": "^0.9.7",
+    "@phosphor-icons/react": "^2.1.10",
     "docx": "^9.15.0",
     "next": "16.4.3",
     "postgres": "^3.4.9",
