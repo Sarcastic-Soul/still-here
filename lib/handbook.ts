@@ -6,6 +6,7 @@ import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TextRun } fro
 import { audit } from "./audit";
 import { sql } from "./db";
 import { chat, parseJson, type ModelKey } from "./llm";
+import { currentFacts } from "./memory";
 import { getPeople, getVaultById } from "./vault";
 
 export type HandbookItem = { text: string; sources: string[] };
@@ -13,6 +14,8 @@ export type HandbookSection = { audience: string; title: string; items: Handbook
 
 const SYSTEM = `You prepare a practical handbook for the family of a person who has died.
 You are given that person's documents, each with a label like [d1], and the people the handbook is for.
+Some sources are facts from the person's recent check-ins, labelled like [m1]. They are newer than the documents:
+when one disagrees with a document (an account moved, a policy changed), the check-in fact wins.
 Write what each person needs to DO or KNOW: what exists, where it is, deadlines, amounts, phone numbers,
 what renews and must be cancelled or kept. Use only facts in the documents. Do not invent anything.
 No condolences, no feelings, no advice beyond what the documents support.
@@ -27,7 +30,14 @@ export async function runHandbook(opts: { vaultId: string; model?: ModelKey; max
   const people = (await getPeople(vault.id)).filter((p) => p.role === "trusted");
   const docs = await sql<{ id: string; kind: string; title: string; body: string }[]>`
     select id, kind, title, body from documents where vault_id = ${vault.id} order by created_at`;
-  const labels = new Map(docs.map((d, i) => [`d${i + 1}`, d]));
+  // Current facts Backboard holds from check-in lines count as sources too, labelled m1, m2...
+  const facts = await currentFacts(vault.id).catch(() => []);
+  const day = (m: (typeof facts)[number]) => String(m.metadata?.at ?? m.updated_at ?? "").slice(0, 10);
+  const factDocs = facts.map((m) => ({ id: `memory:${m.id}`, kind: "check-in", title: `Check-in ${day(m)}`.trim(), body: m.content }));
+  const labels = new Map<string, { id: string; kind: string; title: string; body: string }>([
+    ...docs.map((d, i) => [`d${i + 1}`, d] as const),
+    ...factDocs.map((d, i) => [`m${i + 1}`, d] as const),
+  ]);
   const keys = new Map(people.map((p) => [p.name.toLowerCase(), p]));
 
   const res = await chat({
@@ -44,7 +54,7 @@ export async function runHandbook(opts: { vaultId: string; model?: ModelKey; max
         content:
           `The person who died: ${vault.owner_name}.\n` +
           `People (key: who):\n${people.map((p) => `- ${p.name.toLowerCase()}: ${p.name}, ${p.relation}`).join("\n")}\n` +
-          `- everyone: all of them\n\nDocuments:\n\n` +
+          `- everyone: all of them\n\nDocuments and check-in facts:\n\n` +
           [...labels].map(([l, d]) => `[${l}] (${d.kind}) ${d.title}\n${d.body}`).join("\n\n"),
       },
     ],
@@ -64,13 +74,13 @@ export async function runHandbook(opts: { vaultId: string; model?: ModelKey; max
     for (const item of s.items ?? []) {
       const sources = (item.sources ?? []).map((x) => String(x).replace(/[[\]]/g, ""));
       if (!item.text?.trim() || !sources.length) dropped.push({ item, why: "no source" });
-      else if (!sources.every((x) => labels.has(x))) dropped.push({ item, why: "source not a document" });
+      else if (!sources.every((x) => labels.has(x))) dropped.push({ item, why: "source not a document or check-in" });
       else items.push({ text: item.text.trim(), sources: sources.map((x) => labels.get(x)!.id) });
     }
     if (items.length) sections.push({ audience, title: String(s.title ?? "").trim() || "Notes", items });
   }
 
-  const docx = await renderDocx(vault.owner_name, sections, docs, people);
+  const docx = await renderDocx(vault.owner_name, sections, [...docs, ...factDocs], people);
   const [row] = await sql`
     insert into handbooks (vault_id, model, sections, dropped, docx, usage_id)
     values (${vault.id}, ${opts.model ?? "default"}, ${sql.json(sections as never)}, ${sql.json(dropped as never)}, ${docx}, ${res.usageId})

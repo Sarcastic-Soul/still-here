@@ -241,6 +241,8 @@ function auditLine(s: VaultStatus, e: VaultStatus["audit"][number]) {
     case "checked_in": return `${o} answered: still here.`;
     case "asked": return `${actor || "Someone"} asked a question.`;
     case "vault_created": return "Vault created.";
+    case "memory_added": return "Backboard filed a new fact.";
+    case "memory_replaced": return "Backboard replaced an old fact.";
     default: return String(e.action).replaceAll("_", " ");
   }
 }

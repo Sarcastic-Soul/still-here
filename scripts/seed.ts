@@ -2,12 +2,15 @@
 // FGA tuples), letters and documents. Demo timings squeeze a week into a few seconds.
 import { audit } from "../lib/audit";
 import { sql } from "../lib/db";
+import { deleteAssistant } from "../lib/backboard";
 import { setVaultOwner, unmarkReleased } from "../lib/fga";
+import { remember } from "../lib/memory";
 import { addLetter, addNote, deleteVault } from "../lib/vault-admin";
-import { DEMO_DOCUMENTS, DEMO_LETTERS, DEMO_NOTES, DEMO_OWNER, DEMO_PEOPLE } from "../db/demo-data";
+import { DEMO_CHECKIN_LINES, DEMO_DOCUMENTS, DEMO_LETTERS, DEMO_NOTES, DEMO_OWNER, DEMO_PEOPLE } from "../db/demo-data";
 
-const old = await sql`select id from vaults where slug = 'demo'`;
+const old = await sql`select id, backboard_assistant_id from vaults where slug = 'demo'`;
 if (old[0]) await unmarkReleased(old[0].id);
+if (old[0]?.backboard_assistant_id) await deleteAssistant(old[0].backboard_assistant_id).catch(() => {});
 await deleteVault("demo");
 
 const [vault] = await sql`insert into vaults (slug, owner_name, is_demo) values ('demo', ${DEMO_OWNER.name}, true) returning id`;
@@ -34,6 +37,17 @@ for (const d of DEMO_DOCUMENTS) {
   await sql`insert into documents (vault_id, kind, title, body) values (${vault.id}, ${d.kind}, ${d.title}, ${d.body})`;
 }
 await audit(vault.id, "system", "vault_created", { demo: true });
+
+// Play the owner's past check-in lines through Backboard, one week apart
+const weeks = DEMO_CHECKIN_LINES.length;
+let matched = 0;
+for (const [i, c] of DEMO_CHECKIN_LINES.entries()) {
+  const at = new Date(Date.now() - (weeks - i) * 7 * 86400_000);
+  const r = await remember(vault.id, c.line, at);
+  if (r.action === c.expect) matched++;
+  console.log(`\n${r.action === c.expect ? "ok  " : "MISS"} ${r.action.padEnd(8)} (want ${c.expect}) ${c.line}${r.replaced ? `\n     was: ${r.replaced}\n     now: ${r.fact}` : ""}`);
+}
+console.log(`\nmemory: ${matched} of ${weeks} lines handled as expected`);
 
 console.log(`\ndemo vault ${vault.id}: ${DEMO_NOTES.length} notes, ${DEMO_LETTERS.length} letters, ${DEMO_DOCUMENTS.length} documents`);
 console.log("people:", JSON.stringify({ owner: owner.id, ...ids }));

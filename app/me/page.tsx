@@ -5,6 +5,7 @@ import { End, Top } from "@/components/chrome";
 import { auth0 } from "@/lib/auth0";
 import { sql } from "@/lib/db";
 import { lettersFor } from "@/lib/letters";
+import { currentFacts, memoryCounts } from "@/lib/memory";
 import { currentPeople } from "@/lib/session";
 import { vaultStatus } from "@/lib/status";
 import { getVaultById, type Person } from "@/lib/vault";
@@ -58,7 +59,7 @@ function NoVault({ name, email }: { name: string; email: string }) {
 }
 
 async function Owner({ me }: { me: Person }) {
-  const [vault, status, notes, letters, documents, handbooks] = await Promise.all([
+  const [vault, status, notes, letters, documents, handbooks, facts, counts] = await Promise.all([
     getVaultById(me.vault_id),
     vaultStatus(me.vault_id),
     sql`select id, title, body, shared_with from notes where vault_id = ${me.vault_id} order by created_at desc`,
@@ -67,6 +68,8 @@ async function Owner({ me }: { me: Person }) {
     sql`
       select h.id, h.sections, jsonb_array_length(h.dropped) as dropped, h.created_at, u.cost_usd::float as cost, u.model
       from handbooks h left join usage u on u.id = h.usage_id where h.vault_id = ${me.vault_id} order by h.created_at desc limit 1`,
+    currentFacts(me.vault_id).catch(() => []),
+    memoryCounts(me.vault_id),
   ]);
   const sw = status.switch;
   const trusted = status.people.filter((p) => p.role === "trusted");
@@ -94,6 +97,21 @@ async function Owner({ me }: { me: Person }) {
           <CheckInForm disabled={status.state === "released"} />
         </div>
       </div>
+
+      <section className="panel">
+        <h2>What Backboard remembers</h2>
+        <p className="sub">
+          The line you write when you answer goes to Backboard memory. An open model decides whether it is a new fact or replaces an old one, so the
+          handbook reads where things are now, not where they were. {counts.added} added, {counts.replaced} replaced so far.
+        </p>
+        {facts.length ? (
+          <ul className="list">
+            {facts.map((m) => <li key={m.id}><div><p style={{ margin: 0 }}>{m.content}</p></div></li>)}
+          </ul>
+        ) : (
+          <p className="sub">Nothing yet. Next time you answer, add a line like &ldquo;moved my FD to SBI&rdquo;.</p>
+        )}
+      </section>
 
       <section className="panel">
         <h2>Your phone</h2>

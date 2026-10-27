@@ -1,9 +1,11 @@
 "use server";
 // Everything the signed-in owner can change. Each action checks the session itself.
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { auth0 } from "@/lib/auth0";
 import { sql } from "@/lib/db";
 import { runHandbook } from "@/lib/handbook";
+import { rememberQuietly } from "@/lib/memory";
 import { appUrl, push } from "@/lib/ntfy";
 import { currentPeople } from "@/lib/session";
 import { checkIn } from "@/lib/switch";
@@ -56,7 +58,9 @@ export const checkInAction = guard(async (f) => {
   const owner = await ownerRow();
   const r = await checkIn(owner.vault_id, { line: text(f, "line", 500), channel: "web" });
   if (!r.ok) throw new Error("This vault has been released. It can't be undone from here.");
-  return r.was === "alive" ? "Answered. See you next week." : "Answered. The switch is back to alive.";
+  if (r.line) after(() => rememberQuietly(owner.vault_id, r.line));
+  const memo = r.line ? " Backboard will file your line in a moment." : "";
+  return (r.was === "alive" ? "Answered. See you next week." : "Answered. The switch is back to alive.") + memo;
 });
 
 export const testPushAction = guard(async () => {

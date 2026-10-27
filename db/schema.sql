@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS vaults (
 );
 -- Each vault pushes to its own ntfy topic, a random name only the owner knows
 ALTER TABLE vaults ADD COLUMN IF NOT EXISTS ntfy_topic text;
+-- The Backboard assistant that holds this vault's current facts from check-in lines
+ALTER TABLE vaults ADD COLUMN IF NOT EXISTS backboard_assistant_id text;
 
 -- The owner and the people the owner trusts. Trusted people approve the release (CIBA)
 -- and receive letters and notes. auth0_sub is filled the first time they sign in.
@@ -133,7 +135,7 @@ CREATE TABLE IF NOT EXISTS handbooks (
 CREATE TABLE IF NOT EXISTS usage (
   id                uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   vault_id          uuid REFERENCES vaults(id) ON DELETE SET NULL,
-  job               text NOT NULL,                  -- draft | answer | handbook | eval
+  job               text NOT NULL,                  -- draft | answer | handbook | memory | eval
   provider          text NOT NULL,                  -- groq | ultramarine | local
   model             text NOT NULL,
   input_tokens      integer NOT NULL DEFAULT 0,

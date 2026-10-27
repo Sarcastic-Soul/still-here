@@ -76,6 +76,13 @@ export default async function Home() {
               <b>{stats.answerCost !== null ? usd(stats.answerCost) : "2 of 2"}</b>
               <span>{stats.answerCost !== null ? "per family question on gpt-oss-120b, on average. Logged for every call." : "phone approvals needed. One no cancels it."}</span>
             </div>
+            <div>
+              <b>{stats.memory.replaced}</b>
+              <span>
+                old facts replaced in Backboard memory by lines written with a check-in (&ldquo;moved the FD papers to the SBI locker&rdquo;). The handbook
+                reads where things are now.
+              </span>
+            </div>
           </section>
 
           <section className="make reveal" aria-labelledby="make-title">

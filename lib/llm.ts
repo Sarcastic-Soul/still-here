@@ -24,13 +24,14 @@ export const MODELS = {
 } satisfies Record<string, ModelEntry>;
 
 export type ModelKey = keyof typeof MODELS;
-export type Job = "draft" | "answer" | "handbook" | "eval";
+export type Job = "draft" | "answer" | "handbook" | "memory" | "eval";
 
 // Default model per job. The family-facing answer always runs on an open-weight model.
 export const JOB_MODEL: Record<Job, ModelKey> = {
   draft: "gpt-oss-120b",
   answer: (maybe("ANSWER_MODEL") as ModelKey) ?? "gpt-oss-120b",
   handbook: (maybe("HANDBOOK_MODEL") as ModelKey) ?? "gpt-oss-120b",
+  memory: "gpt-oss-20b",
   eval: "gpt-oss-120b",
 };
 

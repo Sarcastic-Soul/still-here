@@ -188,3 +188,20 @@ export const DEMO_DOCUMENTS: { kind: string; title: string; body: string }[] = [
     body: "Riya has accepted your invitation to be an emergency contact. Access type: Takeover. Wait time: 7 days.",
   },
 ];
+
+// Lines the demo owner wrote with his weekly check-ins, oldest first. Seeding plays them through
+// the real Backboard memory step; `expect` is what a careful person would do with each one.
+export const DEMO_CHECKIN_LINES: { line: string; expect: "none" | "new" | "replaces" }[] = [
+  { line: "All good this week.", expect: "none" },
+  { line: "Started a new SIP of Rs 2,000 in the Nippon India Small Cap fund on the 10th.", expect: "new" },
+  { line: "The FD papers are in the steel almirah, top shelf, in the blue file.", expect: "new" },
+  { line: "Cancelled Cultfit, so that charge stops from November.", expect: "new" },
+  { line: "Tired, long week at work.", expect: "none" },
+  { line: "Moved the FD papers to the SBI locker, number 214, Telibandha branch.", expect: "replaces" },
+  { line: "Netflix moved from the HDFC card to UPI autopay from SBI.", expect: "new" },
+  { line: "Stopped the Nippon small cap SIP, the 2,000 now goes to Parag Parikh.", expect: "replaces" },
+  { line: "Kabir returned the Rs 8,000 he owed me.", expect: "new" },
+  { line: "Locker 214 key is with Riya now, not in my drawer.", expect: "new" },
+  { line: "Nothing changed.", expect: "none" },
+  { line: "Restarted Cultfit, paying yearly now, Rs 9,999 on the HDFC card.", expect: "replaces" },
+];

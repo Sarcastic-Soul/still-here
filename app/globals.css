@@ -169,9 +169,10 @@ nav.top .links a.act:hover { background: rgba(234,163,58,.1); }
 .result .a { animation: rise .5s ease-out both; }
 
 /* Real numbers */
-.numbers { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 140px; background: var(--night-2); }
+.numbers { display: grid; grid-template-columns: repeat(2, 1fr); margin-top: 140px; background: var(--night-2); }
 .numbers div { padding: 34px 30px 38px; }
-.numbers div + div { border-left: 1px solid var(--line); }
+.numbers div:nth-child(even) { border-left: 1px solid var(--line); }
+.numbers div:nth-child(n + 3) { border-top: 1px solid var(--line); }
 .numbers b { display: block; font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 5vw, 64px); line-height: 1; color: var(--marigold-light); margin-bottom: 12px; font-variant-numeric: tabular-nums; }
 .numbers span { color: var(--soft); font-size: 15px; }
 
@@ -260,7 +261,8 @@ footer.end a:hover { color: var(--text); }
   .letter, .qa { padding: 26px; }
   .letter { min-height: 0; }
   .numbers { grid-template-columns: 1fr; }
-  .numbers div + div { border-left: 0; border-top: 1px solid var(--line); }
+  .numbers div:nth-child(even) { border-left: 0; }
+  .numbers div + div { border-top: 1px solid var(--line); }
   .make { padding: 100px 0 80px; gap: 28px; }
   .state-row > div + div { border-left: 0; border-top: 1px solid var(--line); }
   .form .two, .form .three { grid-template-columns: 1fr; }
