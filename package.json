@@ -11,6 +11,7 @@
     "db:schema": "bun scripts/db-schema.ts",
     "fga:setup": "bun scripts/fga-setup.ts",
     "seed": "bun scripts/seed.ts",
+    "eval": "bun scripts/eval.ts",
     "ask": "bun scripts/ask.ts",
     "handbook": "bun scripts/handbook.ts",
     "release:demo": "bun scripts/release-demo.ts"
