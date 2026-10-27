@@ -1,0 +1,53 @@
+{
+  "cli_version": "0.12.2",
+  "checkpoint_id": "01M5Z2C5E367QEBVEDJQAH7YJ4",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "design-options/option-1.html",
+    "design-options/option-2.html",
+    "design-options/option-3-v2.html",
+    "design-options/option-3.html",
+    "design-options/shots/option-1-desk.png",
+    "design-options/shots/option-1-phone.png",
+    "design-options/shots/option-2-desk.png",
+    "design-options/shots/option-2-phone.png",
+    "design-options/shots/option-3-desk.png",
+    "design-options/shots/option-3-phone.png",
+    "design-options/shots/option-3-v2-desk-hero.png",
+    "design-options/shots/option-3-v2-desk-released.png",
+    "design-options/shots/option-3-v2-phone-hero.png",
+    "design-options/shots/option-3-v2-phone-released.png"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 196,
+    "cache_creation_tokens": 313585,
+    "cache_read_tokens": 13986503,
+    "output_tokens": 116664,
+    "api_call_count": 92
+  },
+  "redaction": {
+    "replacements": 34,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 32,
+      "credentialed_uri": 0,
+      "entropy": 2,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}
