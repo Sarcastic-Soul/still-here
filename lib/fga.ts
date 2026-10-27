@@ -126,11 +126,6 @@ export async function unmarkReleased(vaultId: string) {
   await remove([releasedTuple(vaultId)]);
 }
 
-export async function canRead(personId: string, kind: "note" | "letter", id: string) {
-  const { allowed } = await fga().check({ user: user(personId), relation: "can_read", object: `${kind}:${id}` });
-  return allowed === true;
-}
-
 // Checks many objects at once. Returns the ids the person may read, in input order.
 export async function filterReadable(personId: string, kind: "note" | "letter", ids: string[]) {
   if (!ids.length) return [];
