@@ -1,0 +1,71 @@
+changes done
+
+---
+
+that is fine no need to rename it, i wanna what else is left in building the project
+
+---
+
+add backboard, skip browser base, and do 3&4. after that push all the changes with celanup to github repo.
+
+---
+
+<task-notification>
+<task-id>bb10pf1fg</task-id>
+<summary>Monitor event: "eval progress lines and errors"</summary>
+<event>locked: 42 questions before release, 0 notes reached the model</event>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bb10pf1fg</task-id>
+<summary>Monitor event: "eval progress lines and errors"</summary>
+<event>...............................x..x....... gpt-oss-20b</event>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bb10pf1fg</task-id>
+<summary>Monitor event: "eval progress lines and errors"</summary>
+<event>...................x...........x..x....... gpt-oss-120b</event>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bb10pf1fg</task-id>
+<summary>Monitor event: "eval progress lines and errors"</summary>
+<event>...............................x..x.....x. qwen3.8-27b</event>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bb10pf1fg</task-id>
+<summary>Monitor event: "eval progress lines and errors"</summary>
+<event>│ 0 │ gpt-oss-20b  │ 24/24  │ 9/11  │ 2/2     │ 5/5    │ 40/42 │ 0     │ $0.00006 │ 530 ms │
+│ 1 │ gpt-oss-120b │ 23/24  │ 9/11  │ 2/2     │ 5/5    │ 39/42 │ 0     │ $0.00012 │ 566 ms │
+│ 2 │ qwen3.8-27b  │ 24/24  │ 9/11  │ 2/2     │ 4/5    │ 39/42 │ 0     │ $0.00017 │ 188 ms │</event>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bde81nbtl</task-id>
+<tool-use-id>toolu_015vz8ZfsR3HuwmxQAiDhNx7</tool-use-id>
+<output-file>/tmp/claude-1000/-home-anish-kumar-Code-hacktoberfest-week4-still-here/86b72450-2106-4778-8997-b9d17fb4ceb2/tasks/bde81nbtl.output</output-file>
+<status>completed</status>
+<summary>Background command "Run the eval across three models" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bc026kp2t</task-id>
+<tool-use-id>toolu_01VE4SZ2fe41tvMkUxSV8D1p</tool-use-id>
+<output-file>/tmp/claude-1000/-home-anish-kumar-Code-hacktoberfest-week4-still-here/86b72450-2106-4778-8997-b9d17fb4ceb2/tasks/bc026kp2t.output</output-file>
+<status>failed</status>
+<summary>Background command "Wait for eval to finish and show summary" failed with exit code 144</summary>
+</task-notification>
