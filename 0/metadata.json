@@ -38,5 +38,39 @@
       "provider_token": 0,
       "shell_stdin": 0
     }
-  }
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01QuVLXCestVpdgUAprHQjFE",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "design-guardrails"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "2eb161b4d473",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 440,
+        "end": 441,
+        "entry_ids": [
+          "802151bb-c612-4c7d-a122-dc5309a9e4e1"
+        ],
+        "tool_use_id": "toolu_01QuVLXCestVpdgUAprHQjFE"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01QuVLXCestVpdgUAprHQjFE"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: design-guardrails",
+        "default_collapsed": true
+      }
+    }
+  ]
 }
