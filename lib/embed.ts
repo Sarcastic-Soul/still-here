@@ -1,6 +1,9 @@
 // Turns text into a 384-number vector with BAAI/bge-small-en-v1.5, an open embedding model
 // that runs on the CPU in this process. No embedding API to pay for or lose.
-import { pipeline, type FeatureExtractionPipeline } from "@huggingface/transformers";
+import { env, pipeline, type FeatureExtractionPipeline } from "@huggingface/transformers";
+
+// On Vercel only /tmp is writable, so the model downloads there on a cold start
+if (process.env.VERCEL) env.cacheDir = "/tmp/hf";
 
 let extractor: Promise<FeatureExtractionPipeline> | null = null;
 
