@@ -1,0 +1,39 @@
+{
+  "name": "still-here",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "db:schema": "bun scripts/db-schema.ts",
+    "fga:setup": "bun scripts/fga-setup.ts",
+    "seed": "bun scripts/seed.ts",
+    "ask": "bun scripts/ask.ts",
+    "handbook": "bun scripts/handbook.ts",
+    "release:demo": "bun scripts/release-demo.ts"
+  },
+  "dependencies": {
+    "@auth0/nextjs-auth0": "^4.33.0",
+    "@huggingface/transformers": "^4.3.1",
+    "@openfga/sdk": "^0.9.7",
+    "docx": "^9.15.0",
+    "next": "16.4.3",
+    "postgres": "^3.4.9",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "6.0.3"
+  },
+  "trustedDependencies": [
+    "onnxruntime-node"
+  ]
+}

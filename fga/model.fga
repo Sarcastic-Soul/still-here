@@ -1,0 +1,27 @@
+# Still Here authorization model (Auth0 FGA / OpenFGA DSL).
+# The JSON form that is actually uploaded lives in lib/fga.ts (MODEL).
+model
+  schema 1.1
+
+type user
+
+type vault
+  relations
+    define owner: [user]
+    # Written as vault:<id>#released@user:* by code, only after both trusted people approve.
+    # A check-in from the owner deletes it again.
+    define released: [user:*]
+
+type note
+  relations
+    define vault: [vault]
+    define owner: owner from vault
+    define reader: [user]
+    define can_read: owner or (reader and released from vault)
+
+type letter
+  relations
+    define vault: [vault]
+    define owner: owner from vault
+    define recipient: [user]
+    define can_read: owner or (recipient and released from vault)
