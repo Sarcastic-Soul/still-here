@@ -1,0 +1,48 @@
+{
+  "cli_version": "0.12.2",
+  "checkpoint_id": "01M60VPW9JKE2750ZD1PAFEHCT",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 9,
+  "files_touched": [
+    "docs/shots/01-hero.jpg",
+    "docs/shots/02-afterwards-sealed.jpg",
+    "docs/shots/03-confirming.jpg",
+    "docs/shots/04-released.jpg",
+    "docs/shots/05-kabir-letter-answer.jpg",
+    "docs/shots/06-diary-refused.jpg",
+    "docs/shots/07-riya-letter-answer.jpg",
+    "docs/shots/08-mobile.jpg",
+    "docs/shots/cover.jpg"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 122,
+    "cache_creation_tokens": 285036,
+    "cache_read_tokens": 6852853,
+    "output_tokens": 32794,
+    "api_call_count": 56
+  },
+  "redaction": {
+    "replacements": 49,
+    "layers": {
+      "betterleaks": 2,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 37,
+      "credentialed_uri": 0,
+      "entropy": 10,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}

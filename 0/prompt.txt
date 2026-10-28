@@ -1,0 +1,255 @@
+the project is done and live right
+
+---
+
+<task-notification>
+<task-id>bb10pf1fg</task-id>
+<summary>Monitor event: "eval progress lines and errors"</summary>
+<event>[Monitor expired after 30m with 5 events delivered. Re-arm it if you still need the watch.]</event>
+</task-notification>
+
+---
+
+ok what is needed from my side? i hav installed the guradian app on my phone
+
+---
+
+can use some other throwaway mail for this? like darklightgamer777@gmail.com
+
+---
+
+[Image #3]
+
+<pasted_content id="4358">
+
+Still Here
+How it decides
+Afterwards
+Source
+Sign out
+Your vault, Anish
+Nothing here is visible to anyone while you keep answering. The switch below decides when that changes, not a model.
+
+alive
+
+Last answer
+28 Oct 2026, 11:33 am
+Next question
+4 Nov 2026, 11:33 am
+Missed in a row
+0 of 3
+Rules
+One question every 7 days. After 3 misses, a last chance and 2 days to answer.
+I'm still here
+Anything changed? (moved my FD to SBI)
+What Backboard remembers
+The line you write when you answer goes to Backboard memory. An open model decides whether it is a new fact or replaces an old one, so the handbook reads where things are now, not where they were. 0 added, 0 replaced so far.
+
+Nothing yet. Next time you answer, add a line like “moved my FD to SBI”.
+
+Your phone
+The weekly question arrives through ntfy, a free push app with no account. Install it (Android or iPhone), tap +, and subscribe to this topic. Keep the name private: anyone with it can read your pushes.
+
+still-here-12f717b7e9d9c2129244eb55
+
+Send a test push
+The people you trust
+Each must sign in once at https://still-here-gules.vercel.app/me with the email below, and keep Auth0 Guardian on their phone. Until they do, nobody can ask them, and the vault waits.
+
+Anshul · friend
+Has not signed in yet
+Ravi · brother
+Has not signed in yet
+Riya · sister
+Has not signed in yet
+Notes
+The facts they will need. After release each person can ask questions, and the model answers only from the notes you shared with them. Auth0 FGA checks every note before the model sees it.
+
+Title
+LIC life insurance policy
+What they need to know
+Policy number, where the paper is, who the nominee is, how to claim.
+
+Who can ask about this note
+Anshul can ask about this
+Ravi can ask about this
+Riya can ask about this
+Save note
+Letters
+Each letter opens for one person, and only after release. Nobody, the model included, reads it before then.
+
+For
+Anshul
+The letter
+
+Seal it
+The handbook
+Paste the text of policies, statements and renewal emails. Ultramarine drafts what each person needs to do, and code keeps only lines that cite one of these documents. You get a Word file to print and keep with your papers.
+
+Title
+Star Health renewal notice
+Kind
+Policy
+Paste the text
+
+Add document
+Write the handbook
+Still Here
+
+The model that answers is open-weight (gpt-oss-120b). It can run on any host, or on a laptop with the Wi-Fi off.
+
+ Source on GitHub · Hacktoberfest 2026, week 4
+</pasted_content id="4358">
+
+ now suggest some mocak info to fill
+
+---
+
+<pasted_content id="4358">
+
+Still Here
+How it decides
+Afterwards
+Source
+Sign out
+Your vault, Anish
+Nothing here is visible to anyone while you keep answering. The switch below decides when that changes, not a model.
+
+alive
+
+Last answer
+28 Oct 2026, 11:33 am
+Next question
+4 Nov 2026, 11:33 am
+Missed in a row
+0 of 3
+Rules
+One question every 7 days. After 3 misses, a last chance and 2 days to answer.
+I'm still here
+Anything changed? (moved my FD to SBI)
+What Backboard remembers
+The line you write when you answer goes to Backboard memory. An open model decides whether it is a new fact or replaces an old one, so the handbook reads where things are now, not where they were. 0 added, 0 replaced so far.
+
+Nothing yet. Next time you answer, add a line like “moved my FD to SBI”.
+
+Your phone
+The weekly question arrives through ntfy, a free push app with no account. Install it (Android or iPhone), tap +, and subscribe to this topic. Keep the name private: anyone with it can read your pushes.
+
+still-here-12f717b7e9d9c2129244eb55
+
+Send a test push
+The people you trust
+Each must sign in once at https://still-here-gules.vercel.app/me with the email below, and keep Auth0 Guardian on their phone. Until they do, nobody can ask them, and the vault waits.
+
+Anshul · friend
+Has not signed in yet
+Ravi · brother
+Has not signed in yet
+Riya · sister
+Has not signed in yet
+Notes
+The facts they will need. After release each person can ask questions, and the model answers only from the notes you shared with them. Auth0 FGA checks every note before the model sees it.
+
+Title
+LIC life insurance policy
+What they need to know
+Policy number, where the paper is, who the nominee is, how to claim.
+
+Who can ask about this note
+Anshul can ask about this
+Ravi can ask about this
+Riya can ask about this
+Saved. Nobody can ask about it: it is shared with no one.
+
+Save note
+Diary
+My diaries are in the second drawer. Burn them unread.
+
+Shared with no one
+
+Money I owe and money owed to me
+I owe Anshul 6,000 for the Goa trip; please pay him from my SBI account. Rohit owes me 2,500 and will pay it if asked. No other loans.
+
+For Anshul
+
+Phone and laptop
+Phone PIN is in a sealed envelope inside the Bhagavad Gita on my desk. Keep the Jio number active for three months so OTPs still reach it. Wipe the laptop and give it to Riya; the backup drive in the drawer has all the p…
+
+For Riya
+
+SBI savings account
+What they need to know:
+SBI account ending 4471 at the Telibandha branch, Raipur. Nominee is Ravi. The passbook is in the same blue file as the LIC paper. Salary comes here. Close it after moving the money; the branch n…
+
+For Ravi
+
+LIC life insurance policy
+LIC Jeevan Anand policy number 512 884 307, sum assured 10 lakh. The paper is in the blue file in the steel almirah, top shelf. Nominee is Maa. To claim, go to the LIC branch at Shankar Nagar, Raipur with the death certi…
+
+For Ravi, Riya
+
+Letters
+Each letter opens for one person, and only after release. Nobody, the model included, reads it before then.
+
+For
+Anshul
+The letter
+
+Sealed. Anshul can read it only after release.
+
+Seal it
+For Ravi
+Bhai, if you're reading this, the switch did its job. The papers are where the notes say. Look after Maa first and the paperwork second. You were always the cal…
+
+
+For Riya
+Riya, the laptop is yours, and so are all the photos on the backup drive. Don't let anyone make you sad about the small things. Finish your degree. I'm still ch…
+
+
+For Anshul
+Anshul, I still owe you for Goa, and Ravi will sort it. Thanks for every late-night call. Go on the trip we kept postponing and take someone loud.
+
+
+The handbook
+Paste the text of policies, statements and renewal emails. Ultramarine drafts what each person needs to do, and code keeps only lines that cite one of these documents. You get a Word file to print and keep with your papers.
+
+Title
+Star Health renewal notice
+Kind
+Policy
+Paste the text
+
+Added.
+
+Add document
+Star Health renewal notice · policy
+
+HDFC credit card statement, September 2026 · statement
+
+Write the handbook
+Still Here
+
+The model that answers is open-weight (gpt-oss-120b). It can run on any host, or on a laptop with the Wi-Fi off.
+
+ Source on GitHub · Hacktoberfest 2026, week 4
+</pasted_content id="4358">
+
+ i ahve done these so far, we need to record video and cappture screenshots of for blog post , which parrt can you do and what requires my input like login with mail and stuff
+
+---
+
+yes start the screenshots and video
+
+---
+
+<task-notification>
+<task-id>b2defo0ic</task-id>
+<tool-use-id>toolu_018TKE9sgeoSAWE3aTG3amNr</tool-use-id>
+<output-file>/tmp/claude-1000/-home-anish-kumar-Code-hacktoberfest-week4-still-here/86b72450-2106-4778-8997-b9d17fb4ceb2/tasks/b2defo0ic.output</output-file>
+<status>completed</status>
+<summary>Background command "Render and assemble full demo video" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+i think the demo video is good enought write the blog for me to submit
